@@ -8,12 +8,11 @@ using System.Text;
 
 namespace Watch.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class ClockViewModel : ViewModelBase
     {
-        public MainPageViewModel(INavigationService navigationService)
+        public ClockViewModel(INavigationService navigationService)
             : base(navigationService)
         {
-            Title = "Main Page";
         }
     }
 }

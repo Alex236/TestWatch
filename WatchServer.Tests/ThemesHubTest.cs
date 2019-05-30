@@ -44,7 +44,7 @@ namespace WatchServer.Tests
             server = new TestServer(webHostBuilder);
             var connection = new HubConnectionBuilder()
                 .WithUrl(
-                    "http://localhost/watch",
+                    "https://localhost:5001/watch",
                     o => o.HttpMessageHandlerFactory = _ => server.CreateHandler())
                 .Build();
             connection.On<string>(method, msg =>
