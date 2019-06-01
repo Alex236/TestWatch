@@ -4,6 +4,9 @@ using Watch.ViewModels;
 using Watch.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Watch.Services.CanvasDrawing;
+using Watch.Services.GetTime;
+
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Watch
@@ -30,6 +33,9 @@ namespace Watch
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
             containerRegistry.RegisterForNavigation<Clock, ClockViewModel>();
+
+            containerRegistry.Register<ICanvasDrawing, CanvasDrawing>();
+            containerRegistry.Register<IGetTime, GetTime>();
         }
     }
 }
