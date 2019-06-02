@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchServer", "WatchServer\WatchServer.csproj", "{86C468C4-26D7-4683-8977-F64BBBA41682}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchServer.Tests", "WatchServer.Tests\WatchServer.Tests.csproj", "{6C0507E4-9CCF-416A-A386-420B5969AC1E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watch", "Watch\Watch\Watch.csproj", "{3D8F6830-4320-4656-BC5A-1BD566A4D50B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Watch.iOS", "Watch\Watch.iOS\Watch.iOS.csproj", "{400AA819-9818-47C2-9173-C3164F245CD9}"
@@ -37,22 +35,6 @@ Global
 		{86C468C4-26D7-4683-8977-F64BBBA41682}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
 		{86C468C4-26D7-4683-8977-F64BBBA41682}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
 		{86C468C4-26D7-4683-8977-F64BBBA41682}.AppStore|iPhone.Build.0 = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Release|iPhone.Build.0 = Release|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Ad-Hoc|iPhone.ActiveCfg = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.Ad-Hoc|iPhone.Build.0 = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.AppStore|iPhone.ActiveCfg = Debug|Any CPU
-		{6C0507E4-9CCF-416A-A386-420B5969AC1E}.AppStore|iPhone.Build.0 = Debug|Any CPU
 		{3D8F6830-4320-4656-BC5A-1BD566A4D50B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D8F6830-4320-4656-BC5A-1BD566A4D50B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D8F6830-4320-4656-BC5A-1BD566A4D50B}.Release|Any CPU.ActiveCfg = Release|Any CPU

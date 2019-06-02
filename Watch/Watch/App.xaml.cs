@@ -6,6 +6,8 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Watch.Services.CanvasDrawing;
 using Watch.Services.GetTime;
+using Watch.Services.ServerConnection;
+using Watch.Services.CurrentData;
 
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -26,16 +28,19 @@ namespace Watch
         {
             InitializeComponent();
 
-            await NavigationService.NavigateAsync("NavigationPage/Clock");
+            await NavigationService.NavigateAsync("NavigationPage/ClockPage");
         }
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<Clock, ClockViewModel>();
+            containerRegistry.RegisterForNavigation<ClockPage, ClockViewModel>();
+            containerRegistry.RegisterForNavigation<ProfileConfigurePage, ProfileConfigureViewModel>();
 
             containerRegistry.Register<ICanvasDrawing, CanvasDrawing>();
             containerRegistry.Register<IGetTime, GetTime>();
+            containerRegistry.RegisterSingleton<IServerConnection, ServerConnection>();
+            containerRegistry.RegisterSingleton<ICurrentData, CurrentData>();
         }
     }
 }

@@ -1,41 +1,49 @@
 ﻿using System.Threading.Tasks;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
-using WatchServer.DbThemes;
-//using Watch.Models;
+using Watch.Models;
 
 
 namespace WatchServer.Hubs
 {
     public class ThemesHub : Hub
     {
-        private DbThemeContext themes;
-
-        public ThemesHub(DbThemeContext dbThemes)
+        private const string pathToData = "../Data.json";
+        public async Task GetAllProfilesWithCurrent()
         {
-            themes = dbThemes;
+            await Clients.All.SendAsync("GetAllProfilesWithCurrent", GetCurrentProfile());
         }
 
-        public async Task AddTheme(string themeMessege)
+        public async Task UpdateAllData(string content)
         {
-            //Theme theme;
-            try
-            {
-            //    theme = JsonConvert.DeserializeObject<Theme>(themeMessege);
-            }
-            catch
-            {
-                themeMessege = "";
-            }
-            finally
-            {
-                await Clients.All.SendAsync("AddTheme", themeMessege);
-            }
+            SetCurrentProfile(content);
+            await Clients.All.SendAsync("GetAllProfilesWithCurrent", GetCurrentProfile());
         }
 
-        public async Task RemoveTheme(string themeMessege)
+        private string GetCurrentProfile()
         {
-            await Clients.All.SendAsync("RemoveTheme", "");
+            if (!File.Exists(pathToData))
+            {
+                File.Create(pathToData);
+            }
+            string[] strings = File.ReadAllLines(pathToData);
+            string result = strings == null ? "" : string.Concat(strings);
+            return result;
+        }
+
+        private void SetCurrentProfile(string allProfilesWithCurrent)
+        {
+            if (!File.Exists(pathToData))
+            {
+                File.Create(pathToData);
+            }
+            using (StreamWriter sw = new StreamWriter(pathToData))
+            {
+                sw.WriteLine(JsonConvert.SerializeObject(allProfilesWithCurrent));
+            }
         }
     }
 }

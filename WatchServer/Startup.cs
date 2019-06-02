@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
-using WatchServer.DbThemes;
 using WatchServer.Hubs;
 
 
@@ -21,8 +20,6 @@ namespace WatchServer
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSignalR();
-            services.AddDbContext<DbThemeContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

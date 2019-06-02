@@ -28,4 +28,7 @@
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Watch\Watch\Watch.csproj" />
+  </ItemGroup>
 </Project>
