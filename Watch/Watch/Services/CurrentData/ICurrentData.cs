@@ -9,5 +9,7 @@ namespace Watch.Services.CurrentData
     {
         ClockProfile CurrentProfile { get; set; }
         List<ClockProfile> Profiles { get; set; }
+        event Update OnUpdate;
+        void ExecuteUpdate();
     }
 }

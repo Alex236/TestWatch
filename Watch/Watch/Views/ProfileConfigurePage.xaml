@@ -3,11 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Watch.Views.ProfileConfigurePage">
     <StackLayout>
+        <Label Text="Name" />
+        <Entry x:Name="nameEntry" />
         <Label Text="Timezone" />
         <Picker x:Name="timezonePicker" />
         <Label Text="Face Color" />
         <Picker x:Name="faceColorPicker" />
         <Label Text="Hands Color" />
         <Picker x:Name="hansdColorPicker" />
+        <Button Text="Save" Clicked="SaveProfile" />
     </StackLayout>
 </ContentPage>

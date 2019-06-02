@@ -17,7 +17,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <skia:SKCanvasView x:Name="clockCanvas" PaintSurface="OnCanvasViewPaintSurface" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
-        <Picker x:Name="profilePicker" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" />
+        <Picker x:Name="profilePicker" SelectedIndexChanged="SelectProfile" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" />
         <Button Text="+" Clicked="AddProfile" Grid.Column="0" Grid.Row="2" />
         <Button Text="-" Grid.Column="1" Grid.Row="2" />
         <Button Text="Edit" Clicked="EditProfile" Grid.Column="2" Grid.Row="2" />

@@ -17,14 +17,14 @@ using Watch.Models;
 using Watch.Views;
 using Watch.PageParametersForNavigation;
 using Xamarin.Forms;
+using System.ComponentModel;
 
 namespace Watch.ViewModels
 {
-    public class ClockViewModel : ViewModelBase
+    public class ClockViewModel : ViewModelBase, INotifyPropertyChanged
     {
         private readonly ICanvasDrawing canvasDrawing;
         private readonly IGetTime getTime;
-        private readonly INavigationService navigationService;
         private readonly IServerConnection serverConnection;
         private readonly ICurrentData currentData;
         private HubConnection connection;
@@ -32,7 +32,6 @@ namespace Watch.ViewModels
         public ClockViewModel(INavigationService navigationService, ICanvasDrawing canvasDrawing, IGetTime getTime, IServerConnection serverConnection, ICurrentData currentData)
             : base(navigationService)
         {
-            this.navigationService = navigationService;
             this.canvasDrawing = canvasDrawing;
             this.getTime = getTime;
             this.serverConnection = serverConnection;
@@ -40,9 +39,9 @@ namespace Watch.ViewModels
 
             connection = serverConnection.Connection;
                 
-            connection.On<string>("GetAllProfilesWithCurrent", async (messege) =>
+            connection.On<string>("GetAllProfiles", async (messege) =>
             {
-                await GetAllProfilesWithCurrent(messege);
+                await GetAllProfiles(messege);
             });
 
             connection.Closed += async (error) =>
@@ -52,65 +51,43 @@ namespace Watch.ViewModels
             };
         }
 
-        public async Task GetAllProfilesWithCurrent(string messege)
+        public async Task GetAllProfiles(string messege)
         {
-            AllProfilesWithCurrent allProfilesWithCurrent = ParseMessege(messege);
-            if (allProfilesWithCurrent == null)
+            ClockProfile[] profiles = ParseMessege(messege);
+            if (profiles != null)
             {
-                await SetProfile();
+                if (profiles.Length > 0)
+                {
+                    currentData.CurrentProfile = profiles[0];
+                    currentData.Profiles = profiles.ToList();
+                    currentData.ExecuteUpdate();
+                    return;
+                }
             }
-            else
-            {
-                currentData.CurrentProfile = allProfilesWithCurrent.CurrentProfile;
-                currentData.Profiles = allProfilesWithCurrent.AllProfiles;
-            }
+            await SetDefaultProfile();
         }
 
-        private AllProfilesWithCurrent ParseMessege(string messege)
+        private ClockProfile[] ParseMessege(string messege)
         {
-            AllProfilesWithCurrent allProfilesWithCurrent = null;
+            ClockProfile[] profiles;
             try
             {
-                allProfilesWithCurrent = JsonConvert.DeserializeObject<AllProfilesWithCurrent>(messege);
+                profiles = JsonConvert.DeserializeObject<ClockProfile[]>(messege);
             }
-            finally
+            catch
             {
-                if (allProfilesWithCurrent != null)
-                {
-                    currentData.CurrentProfile = allProfilesWithCurrent.CurrentProfile;
-                    currentData.Profiles = allProfilesWithCurrent.AllProfiles;
-                }
+                profiles = null;
             }
-            return allProfilesWithCurrent;
+            return profiles;
         }
 
-        private async Task SetProfile()
+        private async Task SetDefaultProfile()
         {
-            if(currentData.Profiles != null)
+            var profiles = new ClockProfile[]
             {
-                if(currentData.Profiles.Count > 0)
-                {
-                    currentData.CurrentProfile = currentData.Profiles[0];
-                }
-                else
-                {
-                    currentData.Profiles.Add(GetDefaultProfile);
-                    currentData.CurrentProfile = currentData.Profiles[0];
-                }
-            }
-            else
-            {
-                currentData.Profiles = new List<ClockProfile>()
-                {
-                    GetDefaultProfile
-                };
-                currentData.CurrentProfile = currentData.Profiles[0];
-            }
-            await serverConnection.Request("UpdateAllData", JsonConvert.SerializeObject(new AllProfilesWithCurrent()
-            {
-                AllProfiles = currentData.Profiles,
-                CurrentProfile = currentData.CurrentProfile
-            }));
+                GetDefaultProfile
+            };
+            await serverConnection.Request("UpdateAllProfiles", JsonConvert.SerializeObject(profiles));
         }
 
         private ClockProfile GetDefaultProfile
@@ -119,7 +96,7 @@ namespace Watch.ViewModels
             {
                 return new ClockProfile()
                 {
-                    Name = "def",
+                    Name = "Default",
                     FaceColor = "Blue",
                     HandsColor = "White",
                     Timezone = "America/Managua"
@@ -141,7 +118,7 @@ namespace Watch.ViewModels
         {
             NavigationParameters parameters = new NavigationParameters();
             parameters.Add(nameof(AddOrEdit), addOrEdit.ToString());
-            NavigationService.NavigateAsync(nameof(ProfileConfigurePage));
+            NavigationService.NavigateAsync(nameof(ProfileConfigurePage), parameters);
         }
     }
 }

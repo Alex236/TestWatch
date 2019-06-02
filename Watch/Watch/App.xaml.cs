@@ -8,7 +8,7 @@ using Watch.Services.CanvasDrawing;
 using Watch.Services.GetTime;
 using Watch.Services.ServerConnection;
 using Watch.Services.CurrentData;
-
+using Watch.Services.ColorsRepository;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace Watch
@@ -41,6 +41,7 @@ namespace Watch
             containerRegistry.Register<IGetTime, GetTime>();
             containerRegistry.RegisterSingleton<IServerConnection, ServerConnection>();
             containerRegistry.RegisterSingleton<ICurrentData, CurrentData>();
+            containerRegistry.RegisterSingleton<IColorsRepository, ColorsRepository>();
         }
     }
 }

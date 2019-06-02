@@ -7,6 +7,7 @@ using Watch.ViewModels;
 using Watch.Models;
 using Watch.Services.ServerConnection;
 using Watch.Services.CurrentData;
+using Watch.Services.ColorsRepository;
 using Watch.PageParametersForNavigation;
 using Newtonsoft.Json;
 
@@ -17,20 +18,16 @@ namespace Watch.Views
     {
         private readonly IServerConnection serverConnection;
         private readonly ICurrentData currentData;
-        private Page ProfileConfigurePage = new ProfileConfigurePage();
-        private readonly Dictionary<string, string> ColorsAndHex = new Dictionary<string, string>()
-        {
-            {"Yellow", "#f1f442"},
-            {"Blue", "#5d9afc"},
-            {"White", "#ffffff"},
-            {"Green", "#6dff6d"}
-        };
+        private readonly IColorsRepository colorsRepository;
 
-        public ClockPage(IServerConnection serverConnection, ICurrentData currentData)
+        public ClockPage(IServerConnection serverConnection, ICurrentData currentData, IColorsRepository colorsRepository)
         {
             this.serverConnection = serverConnection;
             this.currentData = currentData;
+            this.colorsRepository = colorsRepository;
             InitializeComponent();
+            currentData.OnUpdate += UpdateProfilesPicker;
+
             Device.StartTimer(TimeSpan.FromMilliseconds(500), () =>
             {
                 clockCanvas.InvalidateSurface();
@@ -42,7 +39,7 @@ namespace Watch.Views
         {
             base.OnAppearing();
             await serverConnection.Connect();
-            await serverConnection.Request("GetAllProfilesWithCurrent");
+            await serverConnection.Request("GetAllProfiles");
         }
 
         protected override async void OnDisappearing()
@@ -56,14 +53,27 @@ namespace Watch.Views
             if (BindingContext is ClockViewModel clockViewModel)
             {
                 if (currentData.CurrentProfile == null) return;
-                bool handsParsed = SKColor.TryParse(ColorsAndHex[currentData.CurrentProfile.HandsColor], out SKColor handsColor);
-                bool faceParsed = SKColor.TryParse(ColorsAndHex[currentData.CurrentProfile.FaceColor], out SKColor faceColor);
+                bool handsParsed = SKColor.TryParse(colorsRepository.ColorAndHex[currentData.CurrentProfile.HandsColor], out SKColor handsColor);
+                bool faceParsed = SKColor.TryParse(colorsRepository.ColorAndHex[currentData.CurrentProfile.FaceColor], out SKColor faceColor);
                 DateTime? time = clockViewModel.GetTimeByTimezone();
                 if (handsParsed && faceParsed && time != null)
                 {
                     SKCanvas canvas = e.Surface.Canvas;
                     clockViewModel.DrawClock(handsColor, faceColor, canvas, (DateTime)time, e.Info.Height, e.Info.Width);
                 }
+            }
+        }
+
+        private void UpdateProfilesPicker()
+        {
+            if (currentData.Profiles != null)
+            {
+                profilePicker.Items.Clear();
+                foreach (var profile in currentData.Profiles)
+                {
+                    profilePicker.Items.Add(profile.Name);
+                }
+                profilePicker.SelectedItem = currentData.CurrentProfile.Name;
             }
         }
 
@@ -81,6 +91,11 @@ namespace Watch.Views
             {
                 clockViewModel.OpenProfileConfigure(AddOrEdit.Edit);
             }
+        }
+
+        public void SelectProfile(object sender, EventArgs e)
+        {
+            currentData.CurrentProfile = currentData.Profiles[profilePicker.SelectedIndex];
         }
     }
 }

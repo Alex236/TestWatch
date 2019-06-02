@@ -11,38 +11,53 @@ namespace WatchServer.Hubs
 {
     public class ThemesHub : Hub
     {
-        private const string pathToData = "../Data.json";
-        public async Task GetAllProfilesWithCurrent()
+        private const string pathToAllProfiles = "DataAllProfiles.json";
+
+        public async Task GetAllProfiles()
         {
-            await Clients.All.SendAsync("GetAllProfilesWithCurrent", GetCurrentProfile());
+            await Clients.All.SendAsync("GetAllProfiles", ReadFile(pathToAllProfiles));
         }
 
-        public async Task UpdateAllData(string content)
+        public async Task UpdateAllProfiles(string content)
         {
-            SetCurrentProfile(content);
-            await Clients.All.SendAsync("GetAllProfilesWithCurrent", GetCurrentProfile());
+            WriteFile(content, pathToAllProfiles);
+            await Clients.All.SendAsync("GetAllProfiles", ReadFile(pathToAllProfiles));
         }
 
-        private string GetCurrentProfile()
+        private string ReadFile(string path)
         {
-            if (!File.Exists(pathToData))
+            string response = "";
+            try
             {
-                File.Create(pathToData);
+                if (!File.Exists(path))
+                {
+                    File.Create(path);
+                }
+                using (StreamReader sr = new StreamReader(path))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        response += line;
+                    }
+                }
             }
-            string[] strings = File.ReadAllLines(pathToData);
-            string result = strings == null ? "" : string.Concat(strings);
-            return result;
+            catch
+            {
+                response = "";
+            }
+            return response;
         }
 
-        private void SetCurrentProfile(string allProfilesWithCurrent)
+        private void WriteFile(string data, string path)
         {
-            if (!File.Exists(pathToData))
+            if (!File.Exists(path))
             {
-                File.Create(pathToData);
+                File.Create(path);
             }
-            using (StreamWriter sw = new StreamWriter(pathToData))
+            using (StreamWriter sw = new StreamWriter(path))
             {
-                sw.WriteLine(JsonConvert.SerializeObject(allProfilesWithCurrent));
+                sw.WriteLine(data);
             }
         }
     }
