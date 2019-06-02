@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Watch.Models;
 using Watch.Services.CurrentData;
 using Watch.Services.ColorsRepository;

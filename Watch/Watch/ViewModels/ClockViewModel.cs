@@ -1,10 +1,6 @@
-﻿using Prism.Commands;
-using Prism.Mvvm;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using SkiaSharp;
 using Microsoft.AspNetCore.SignalR.Client;
@@ -16,18 +12,16 @@ using Watch.Services.CurrentData;
 using Watch.Models;
 using Watch.Views;
 using Watch.PageParametersForNavigation;
-using Xamarin.Forms;
-using System.ComponentModel;
+
 
 namespace Watch.ViewModels
 {
-    public class ClockViewModel : ViewModelBase, INotifyPropertyChanged
+    public class ClockViewModel : ViewModelBase
     {
         private readonly ICanvasDrawing canvasDrawing;
         private readonly IGetTime getTime;
         private readonly IServerConnection serverConnection;
         private readonly ICurrentData currentData;
-        private HubConnection connection;
 
         public ClockViewModel(INavigationService navigationService, ICanvasDrawing canvasDrawing, IGetTime getTime, IServerConnection serverConnection, ICurrentData currentData)
             : base(navigationService)
@@ -37,7 +31,7 @@ namespace Watch.ViewModels
             this.serverConnection = serverConnection;
             this.currentData = currentData;
 
-            connection = serverConnection.Connection;
+            HubConnection connection = serverConnection.Connection;
                 
             connection.On<string>("GetAllProfiles", async (messege) =>
             {
@@ -49,6 +43,20 @@ namespace Watch.ViewModels
                 await Task.Delay(2000);
                 await connection.StartAsync();
             };
+        }
+
+        private ClockProfile GetDefaultProfile
+        {
+            get
+            {
+                return new ClockProfile()
+                {
+                    Name = "Default",
+                    FaceColor = "Blue",
+                    HandsColor = "White",
+                    Timezone = "America/Managua"
+                };
+            }
         }
 
         public async Task GetAllProfiles(string messege)
@@ -88,20 +96,6 @@ namespace Watch.ViewModels
                 GetDefaultProfile
             };
             await serverConnection.Request("UpdateAllProfiles", JsonConvert.SerializeObject(profiles));
-        }
-
-        private ClockProfile GetDefaultProfile
-        {
-            get
-            {
-                return new ClockProfile()
-                {
-                    Name = "Default",
-                    FaceColor = "Blue",
-                    HandsColor = "White",
-                    Timezone = "America/Managua"
-                };
-            }
         }
 
         public void DrawClock(SKColor handsColor, SKColor faceColor, SKCanvas canvas, DateTime time, int heigh, int width)

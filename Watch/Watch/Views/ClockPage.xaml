@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              x:Class="Watch.Views.ClockPage"
-             Title="{Binding Title}"
              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              NavigationPage.HasNavigationBar="false">
     <Grid x:Name="BackGround">
@@ -17,9 +17,10 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <skia:SKCanvasView x:Name="clockCanvas" PaintSurface="OnCanvasViewPaintSurface" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3"/>
-        <Picker x:Name="profilePicker" SelectedIndexChanged="SelectProfile" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" />
+        <Picker x:Name="profilePicker" ios:Picker.UpdateMode="WhenFinished" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3" />
         <Button Text="+" Clicked="AddProfile" Grid.Column="0" Grid.Row="2" />
-        <Button Text="-" Grid.Column="1" Grid.Row="2" />
+        <Button Text="-" Clicked="DeleteProfile" Grid.Column="1" Grid.Row="2" />
         <Button Text="Edit" Clicked="EditProfile" Grid.Column="2" Grid.Row="2" />
+        <Picker IsVisible="false" x:Name="deletePicker" ios:Picker.UpdateMode="WhenFinished" />
     </Grid>
 </ContentPage>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.SignalR.Client;
 
 
-
 namespace Watch.Services.ServerConnection
 {
     public class ServerConnection : IServerConnection

@@ -1,5 +1,4 @@
-﻿using System;
-namespace Watch.PageParametersForNavigation
+﻿namespace Watch.PageParametersForNavigation
 {
     public enum AddOrEdit
     {

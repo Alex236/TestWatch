@@ -9,9 +9,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.4" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.4" />
     <PackageReference Include="Microsoft.AspNet.SignalR" Version="2.4.1" />
   </ItemGroup>
 
@@ -21,12 +18,11 @@
     <Content Remove="Pages\Shared\_CookieConsentPartial.cshtml" />
     <Content Remove="Pages\Shared\_Layout.cshtml" />
     <Content Remove="Pages\Shared\_ValidationScriptsPartial.cshtml" />
+    <Content Remove="wwwroot\.DS_Store" />
+    <Content Remove="wwwroot\index.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DbThemes\" />
     <Folder Include="Hubs\" />
-    <Folder Include="wwwroot\" />
-    <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Watch\Watch\Watch.csproj" />

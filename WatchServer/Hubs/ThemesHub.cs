@@ -1,10 +1,6 @@
 ﻿using System.Threading.Tasks;
-using System.Linq;
 using System.IO;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.SignalR;
-using Newtonsoft.Json;
-using Watch.Models;
 
 
 namespace WatchServer.Hubs

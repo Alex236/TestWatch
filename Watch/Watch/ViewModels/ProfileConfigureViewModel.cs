@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Prism.Navigation;
+﻿using Prism.Navigation;
 using Watch.Models;
 using Watch.PageParametersForNavigation;
 using Watch.Services.CurrentData;
@@ -17,7 +15,6 @@ namespace Watch.ViewModels
         private readonly ICurrentData currentData;
         private readonly IServerConnection serverConnection;
         private ClockProfile profile;
-
 
         public ProfileConfigureViewModel(INavigationService navigationService, ICurrentData currentData, IServerConnection serverConnection)
             : base(navigationService)
@@ -55,7 +52,10 @@ namespace Watch.ViewModels
             else
             {
                 int index = currentData.Profiles.IndexOf(Profile);
-                currentData.Profiles[index] = profile;
+                if (index >= 0 && index < currentData.Profiles.Count)
+                {
+                    currentData.Profiles[index] = profile;
+                }
             }
             serverConnection.Request("UpdateAllProfiles", JsonConvert.SerializeObject(currentData.Profiles));
             navigationService.NavigateAsync(nameof(ClockPage));

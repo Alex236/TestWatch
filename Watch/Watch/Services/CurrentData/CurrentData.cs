@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Watch.Models;
-using Xamarin.Forms;
-using System.Threading;
 using Xamarin.Essentials;
 
 
